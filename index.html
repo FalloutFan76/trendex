@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#8f1d63">
+  <title>TrenDéx — Pokédex ferroviaria</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="TrenDéx inicio"><span>TrenDéx</span><small>CAT</small></a>
+    <button id="themeButton" class="icon-button" aria-label="Cambiar tema">☾</button>
+  </header>
+
+  <main>
+    <section id="homeView">
+      <div class="hero">
+        <p class="eyebrow">TU COLECCIÓN FERROVIARIA</p>
+        <h1>Todos los trenes.<br><span>Tu próxima captura.</span></h1>
+        <div class="stats">
+          <div><strong id="caughtCount">0</strong><span>retos completados</span></div>
+          <div><strong id="totalCount">30</strong><span>retos disponibles</span></div>
+          <div class="progress-wrap"><div class="progress"><i id="progressBar"></i></div><span id="progressLabel">0% completado</span></div>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <label class="searchbox"><span>⌕</span><input id="searchInput" type="search" placeholder="Buscar tren, serie u operadora…" autocomplete="off"></label>
+        <div class="chips" id="filterChips">
+          <button class="chip active" data-filter="Todos">Todos</button>
+          <button class="chip" data-filter="FGC">FGC</button>
+          <button class="chip" data-filter="Rodalies">Rodalies</button>
+          <button class="chip" data-filter="Metro">Metro</button>
+          <button class="chip" data-filter="Tram">Tram</button>
+          <button class="chip" data-filter="Turístico">Turístico</button>
+        </div>
+      </div>
+
+      <div class="section-heading"><div><p class="eyebrow">CATÁLOGO DE CATALUÑA</p><h2>Tu Pokédex</h2></div><span id="resultCount" class="muted"></span></div>
+      <div id="trainGrid" class="train-grid"></div>
+      <p class="footnote">Catálogo inicial de demostración: ampliaremos y verificaremos las series en la siguiente fase.</p>
+    </section>
+
+    <section id="detailView" class="hidden">
+      <button id="backButton" class="back-button">← Volver al catálogo</button>
+      <div id="trainDetail"></div>
+    </section>
+
+    <section id="collectionView" class="hidden">
+      <div class="section-heading"><div><p class="eyebrow">TU PROGRESO</p><h1>Mi colección</h1></div></div>
+      <div class="collection-summary panel">
+        <strong id="collectionProgress">0%</strong><span>de la colección completada</span>
+        <div class="progress"><i id="collectionBar"></i></div>
+      </div>
+      <div id="gallery" class="gallery"></div>
+      <p id="emptyGallery" class="empty-state">Todavía no hay capturas. Abre una ficha y completa tu primer reto.</p>
+    </section>
+  </main>
+
+  <nav class="bottom-nav" aria-label="Navegación principal">
+    <button class="nav-item active" data-view="homeView"><span>▦</span>Pokédex</button>
+    <button class="nav-item" data-view="collectionView"><span>▧</span>Colección</button>
+  </nav>
+
+  <dialog id="captureDialog" class="capture-dialog">
+    <form method="dialog" class="dialog-top"><div><p class="eyebrow">MISIÓN FOTOGRÁFICA</p><h2 id="captureTitle">Capturar misión</h2></div><button class="icon-button" aria-label="Cerrar">×</button></form>
+    <p id="captureDescription" class="muted"></p>
+    <div class="capture-options">
+      <button id="cameraButton" class="primary-button">◎ Abrir cámara</button>
+      <label class="secondary-button upload-button">↑ Elegir foto reciente<input id="galleryInput" type="file" accept="image/*" hidden></label>
+    </div>
+    <p class="privacy-note">La foto debe tener una fecha de captura verificable de menos de 12 horas. Si no podemos verificarla, no la aceptaremos.</p>
+    <div id="cameraArea" class="camera-area hidden">
+      <video id="cameraVideo" autoplay playsinline></video>
+      <button id="takePhotoButton" class="primary-button">● Hacer foto</button>
+    </div>
+    <div id="captureMessage" class="message" role="status"></div>
+  </dialog>
+  <canvas id="photoCanvas" class="hidden"></canvas>
+  <script src="app.js"></script>
+</body>
+</html>
