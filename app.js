@@ -1,15 +1,82 @@
+
 const trains = [
- {id:"fgc-112",name:"Serie 112 FGC",series:"UT 112",operator:"FGC",category:"Barcelona-Vallès",glyph:"🚆",color:"#8f1d63",description:"Unidad de cuatro coches característica de la línea Barcelona-Vallès.",specific:[["♿","Coche accesible PMR","Encuadra la zona accesible y su señalización."],["🔤","Indicador de línea","Fotografía el indicador de destino encendido."]]},
- {id:"fgc-113",name:"Serie 113",series:"UT 113",operator:"FGC",category:"Barcelona-Vallès",glyph:"🚆",color:"#8f1d63",description:"Unidad moderna de FGC para servicios metropolitanos.",specific:[["🪟","Ventanas y puertas","Busca una composición geométrica de ventanas y puertas."],["🔢","Número de unidad","Captura el número identificativo de la unidad."]]},
- {id:"fgc-213",name:"Serie 213",series:"UT 213",operator:"FGC",category:"Llobregat-Anoia",glyph:"🚈",color:"#8f1d63",description:"Tren eléctrico de la línea Llobregat-Anoia.",specific:[["🛤️","Entorno de vía métrica","Incluye el tren y parte de la infraestructura de vía."],["🔗","Enganche frontal","Encuadra el enganche desde una posición segura."]]},
- {id:"fgc-400",name:"Serie 400 / 600",series:"Granota",operator:"FGC",category:"Histórico",glyph:"🚋",color:"#8f1d63",description:"Material histórico ligado a la memoria ferroviaria catalana.",specific:[["🕰️","Detalle histórico","Busca una placa, faro o detalle original."],["🎨","Librea clásica","Fotografía el lateral mostrando su decoración."]]},
- {id:"rod-civia",name:"Civia",series:"Civia",operator:"Rodalies",category:"Cercanías",glyph:"🚆",color:"#e87827",description:"Familia de unidades de cercanías presente en distintas líneas.",specific:[["🟡","Puertas de acceso","Captura el contraste de las puertas y el lateral."],["🪧","Destino del tren","Fotografía el panel de destino legible."]]},
- {id:"renfe-447",name:"Serie 447",series:"447",operator:"Rodalies",category:"Cercanías",glyph:"🚆",color:"#e87827",description:"Unidad clásica de cercanías con presencia habitual en Cataluña.",specific:[["🪟","Frontal característico","Encuadra el frontal y sus ventanas."],["🧩","Detalle de la librea","Busca una zona donde se vea bien la decoración."]]},
- {id:"renfe-450",name:"Serie 450",series:"450",operator:"Rodalies",category:"Cercanías de dos pisos",glyph:"🚆",color:"#e87827",description:"Tren de dos pisos reconocible por su gran capacidad.",specific:[["🏢","Dos pisos en una foto","Encuadra una zona donde se aprecie la altura del tren."],["🚪","Acceso de viajeros","Captura la zona de puertas y distribución de pisos."]]},
- {id:"metro- s",name:"Metro serie 5000",series:"5000",operator:"Metro",category:"Metro de Barcelona",glyph:"🚇",color:"#168b70",description:"Una de las familias de trenes del metro barcelonés.",specific:[["💡","Luces del frontal","Captura las luces del tren en estación."],["🚇","Tren y andén","Compón una imagen con el tren y el andén."]]},
- {id:"tram-1",name:"Trambaix / Trambesòs",series:"Citadis",operator:"Tram",category:"Tranvía",glyph:"🚊",color:"#368a9d",description:"Tranvías modernos de la red metropolitana de Barcelona.",specific:[["🌿","Tranvía en la calle","Incluye el tranvía y el entorno urbano."],["〰️","Curva de vía","Fotografía el tranvía siguiendo una curva desde un lugar seguro."]]},
- {id:"turistic-llacs",name:"Tren dels Llacs",series:"Tren turístico",operator:"Turístico",category:"Lleida–La Pobla",glyph:"🚂",color:"#aa6b32",description:"Servicio turístico con paisajes y material ferroviario singular.",specific:[["🏞️","Tren y paisaje","Incluye el paisaje sin perder el tren como protagonista."],["🧳","Detalle del coche","Busca un detalle distintivo del material turístico."]]}
+ {
+  id: "fgc-112",
+  name: "Serie 112 FGC",
+  series: "UT 112",
+  operator: "FGC",
+  category: "Barcelona-Vallès",
+  glyph: "🚆",
+  image: "fgc_ut112.jpg",
+  color: "#8f1d63",
+  description: "Unidad de cuatro coches característica de la línea Barcelona-Vallès.",
+  specific: [
+   ["♿","Coche accesible PMR","Encuadra la zona accesible y su señalización."],
+   ["🔤","Indicador de línea","Fotografía el indicador de destino encendido."]
+  ]
+ },
+ {
+  id: "fgc-113",
+  name: "Serie 113",
+  series: "UT 113",
+  operator: "FGC",
+  category: "Barcelona-Vallès",
+  glyph: "🚆",
+  image: "fgc_ut113.jpg",
+  color: "#8f1d63",
+  description: "Unidad moderna de FGC para servicios metropolitanos.",
+  specific: [
+   ["🪟","Ventanas y puertas","Busca una composición geométrica de ventanas y puertas."],
+   ["🔢","Número de unidad","Captura el número identificativo de la unidad."]
+  ]
+ },
+ {
+  id: "fgc-213",
+  name: "Serie 213",
+  series: "UT 213",
+  operator: "FGC",
+  category: "Llobregat-Anoia",
+  glyph: "🚈",
+  image: "fgc_ut213.jpg",
+  color: "#8f1d63",
+  description: "Tren eléctrico de la línea Llobregat-Anoia.",
+  specific: [
+   ["🛤️","Entorno de vía métrica","Incluye el tren y parte de la infraestructura de vía."],
+   ["🔗","Enganche frontal","Encuadra el enganche desde una posición segura."]
+  ]
+ },
+ {
+  id: "fgc-211",
+  name: "Serie 211 FGC",
+  series: "UT 211",
+  operator: "FGC",
+  category: "Histórico",
+  glyph: "🚆",
+  image: "fgc_ut211.jpg",
+  color: "#8f1d63",
+  description: "Unidad ferroviaria de FGC.",
+  specific: [
+   ["🛤️","Entorno ferroviario","Fotografía el tren y parte de su entorno."],
+   ["🔢","Número de unidad","Captura su identificación."]
+  ]
+ },
+ {
+  id: "fgc-400",
+  name: "Serie 400 / 600",
+  series: "Granota",
+  operator: "FGC",
+  category: "Histórico",
+  glyph: "🚋",
+  image: "fgc_ut400.jpg",
+  color: "#8f1d63",
+  description: "Material histórico ligado a la memoria ferroviaria catalana.",
+  specific: [
+   ["🕰️","Detalle histórico","Busca una placa, faro o detalle original."],
+   ["🎨","Librea clásica","Fotografía el lateral mostrando su decoración."]
+  ]
+ }
 ];
+
 const common = [
  ["📐","Gran angular ×0,5","Haz una foto amplia que muestre el tren y su entorno."],
  ["🚉","Frontal o perfil completo","Encuadra la mayor parte posible del tren desde una zona pública y segura."],
