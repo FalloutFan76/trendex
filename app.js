@@ -10,6 +10,24 @@ const common = [
   ["🌙", "Ambiente especial", "Fotografía el tren de noche, con reflejos o iluminación interesante."]
 ];
 
+const trains = [
+  {
+    id: "tren-prueba",
+    name: "Tren de prueba",
+    series: "Serie de prueba",
+    operator: "FGC",
+    category: "Cercanías",
+    glyph: "🚆",
+    image: "tren-prueba.jpg",
+    color: "#f72585",
+    description: "Tarjeta temporal para comprobar el catálogo.",
+    specific: [
+      ["🚆", "Foto lateral", "Fotografía el tren desde una zona pública."],
+      ["🌆", "Foto del entorno", "Incluye el entorno en la fotografía."]
+    ]
+  }
+];
+
 const $ = id => document.getElementById(id);
 
 const state = {
