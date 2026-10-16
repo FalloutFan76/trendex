@@ -1,83 +1,434 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#8f1d63">
-  <title>TrenDéx — Pokédex ferroviaria</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="theme-color"
+    content="#f72585"
+  >
+  <meta
+    name="description"
+    content="TrenDéx: descubre, fotografía y colecciona trenes como si fueran Pokémon."
+  >
+
+  <title>TrenDéx 🚆</title>
+
   <link rel="stylesheet" href="styles.css">
+
+  <script src="app.js" defer></script>
 </head>
+
 <body>
-  <header class="topbar">
-    <a class="brand" href="#" aria-label="TrenDéx inicio"><span>TrenDéx</span><small>CAT</small></a>
-    <button id="themeButton" class="icon-button" aria-label="Cambiar tema">☾</button>
-  </header>
+  <div class="app">
 
-  <main>
-    <section id="homeView">
-      <div class="hero">
-        <p class="eyebrow">TU COLECCIÓN FERROVIARIA</p>
-        <h1>Todos los trenes.<br><span>Tu próxima captura.</span></h1>
-        <div class="stats">
-          <div><strong id="caughtCount">0</strong><span>retos completados</span></div>
-          <div><strong id="totalCount">30</strong><span>retos disponibles</span></div>
-          <div class="progress-wrap"><div class="progress"><i id="progressBar"></i></div><span id="progressLabel">0% completado</span></div>
+    <!-- CABECERA -->
+    <header class="topbar">
+      <a href="#" class="brand" aria-label="TrenDéx, inicio">
+        <span class="brand-icon">🚆</span>
+        <span class="brand-name">TrenDéx</span>
+      </a>
+
+      <button
+        id="theme-toggle"
+        class="icon-button"
+        type="button"
+        aria-label="Cambiar tema"
+        title="Cambiar tema"
+      >
+        🌙
+      </button>
+    </header>
+
+    <main>
+
+      <!-- VISTA DEL CATÁLOGO -->
+      <section id="catalog-view" class="view active">
+
+        <section class="hero">
+          <div class="hero-content">
+            <p class="eyebrow">TU AVENTURA FERROVIARIA</p>
+
+            <h1>¡Hazte con todos!</h1>
+
+            <p class="hero-description">
+              Descubre trenes, completa misiones y crea tu propia
+              colección ferroviaria.
+            </p>
+
+            <a href="#train-grid" class="hero-button">
+              Explorar trenes <span aria-hidden="true">→</span>
+            </a>
+          </div>
+
+          <div class="hero-visual" aria-hidden="true">
+            <span class="hero-train">🚄</span>
+            <span class="hero-sparkle sparkle-one">✦</span>
+            <span class="hero-sparkle sparkle-two">✧</span>
+          </div>
+        </section>
+
+        <!-- ESTADÍSTICAS -->
+        <section class="stats" aria-label="Tu progreso">
+          <article class="stat-card">
+            <span class="stat-icon" aria-hidden="true">📘</span>
+            <div>
+              <p class="stat-label">Descubiertos</p>
+              <p class="stat-value" id="discovered-count">0</p>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <span class="stat-icon" aria-hidden="true">📸</span>
+            <div>
+              <p class="stat-label">Capturados</p>
+              <p class="stat-value" id="captured-count">0</p>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <span class="stat-icon" aria-hidden="true">⭐</span>
+            <div>
+              <p class="stat-label">Completado</p>
+              <p class="stat-value" id="completion-count">0%</p>
+            </div>
+          </article>
+        </section>
+
+        <!-- BÚSQUEDA Y FILTROS -->
+        <section class="catalog-section">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">TU ENCICLOPEDIA</p>
+              <h2>Catálogo ferroviario</h2>
+            </div>
+
+            <span id="visible-count" class="result-count">
+              Trenes
+            </span>
+          </div>
+
+          <div class="toolbar">
+            <label class="search-box">
+              <span aria-hidden="true">🔎</span>
+
+              <input
+                type="search"
+                id="search-input"
+                placeholder="Buscar trenes..."
+                autocomplete="off"
+                aria-label="Buscar trenes"
+              >
+
+              <button
+                id="clear-search"
+                class="clear-search"
+                type="button"
+                aria-label="Borrar búsqueda"
+                hidden
+              >
+                ✕
+              </button>
+            </label>
+
+            <div
+              class="filter-chips"
+              id="filter-chips"
+              aria-label="Filtrar por operador"
+            >
+              <button
+                class="filter-chip active"
+                type="button"
+                data-filter="Todos"
+                aria-pressed="true"
+              >
+                Todos
+              </button>
+
+              <button
+                class="filter-chip"
+                type="button"
+                data-filter="FGC"
+                aria-pressed="false"
+              >
+                FGC
+              </button>
+
+              <button
+                class="filter-chip"
+                type="button"
+                data-filter="Rodalies"
+                aria-pressed="false"
+              >
+                Rodalies
+              </button>
+
+              <button
+                class="filter-chip"
+                type="button"
+                data-filter="Metro"
+                aria-pressed="false"
+              >
+                Metro
+              </button>
+
+              <button
+                class="filter-chip"
+                type="button"
+                data-filter="Tram"
+                aria-pressed="false"
+              >
+                Tram
+              </button>
+
+              <button
+                class="filter-chip"
+                type="button"
+                data-filter="Turístico"
+                aria-pressed="false"
+              >
+                Turístico
+              </button>
+            </div>
+          </div>
+
+          <!-- AQUÍ SE GENERAN LAS TARJETAS DESDE app.js -->
+          <div
+            id="train-grid"
+            class="train-grid"
+            aria-live="polite"
+          ></div>
+
+          <div id="empty-state" class="empty-state" hidden>
+            <span class="empty-icon" aria-hidden="true">🚉</span>
+            <h3>No hay trenes por aquí</h3>
+            <p>Prueba otra búsqueda o cambia el filtro.</p>
+          </div>
+        </section>
+      </section>
+
+      <!-- VISTA DE DETALLE -->
+      <section id="detail-view" class="view" hidden>
+        <div class="detail-toolbar">
+          <button
+            id="back-to-catalog"
+            class="back-button"
+            type="button"
+          >
+            <span aria-hidden="true">←</span>
+            Volver al catálogo
+          </button>
         </div>
+
+        <!-- app.js inserta aquí la ficha del tren -->
+        <div id="train-detail"></div>
+      </section>
+
+      <!-- VISTA DE COLECCIÓN -->
+      <section id="collection-view" class="view" hidden>
+        <section class="page-heading">
+          <p class="eyebrow">TU PROGRESO</p>
+          <h1>Mi colección</h1>
+          <p>
+            Todos tus descubrimientos y las fotos de tus aventuras.
+          </p>
+        </section>
+
+        <section class="collection-summary">
+          <div class="collection-summary-icon" aria-hidden="true">
+            🏆
+          </div>
+
+          <div class="collection-summary-content">
+            <h2>Tu colección ferroviaria</h2>
+            <p id="collection-summary-text">
+              ¡Empieza a descubrir trenes!
+            </p>
+
+            <div
+              class="progress-track"
+              role="progressbar"
+              aria-label="Progreso de la colección"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-valuenow="0"
+              id="collection-progress"
+            >
+              <div
+                id="collection-progress-bar"
+                class="progress-fill"
+              ></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="collection-section">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">TUS FOTOGRAFÍAS</p>
+              <h2>Galería de capturas</h2>
+            </div>
+
+            <span id="gallery-count" class="result-count">0 fotos</span>
+          </div>
+
+          <!-- app.js genera las fotografías -->
+          <div id="photo-gallery" class="photo-gallery"></div>
+
+          <div id="gallery-empty" class="empty-state" hidden>
+            <span class="empty-icon" aria-hidden="true">📸</span>
+            <h3>Tu galería está vacía</h3>
+            <p>
+              Abre la ficha de un tren y haz tu primera captura.
+            </p>
+
+            <button
+              id="gallery-go-catalog"
+              class="primary-button"
+              type="button"
+            >
+              Explorar trenes
+            </button>
+          </div>
+        </section>
+
+        <section class="collection-section">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">SIGUE EXPLORANDO</p>
+              <h2>Misiones</h2>
+            </div>
+          </div>
+
+          <!-- app.js genera las misiones -->
+          <div id="missions-list" class="missions-list"></div>
+        </section>
+      </section>
+
+    </main>
+
+    <!-- NAVEGACIÓN INFERIOR -->
+    <nav class="bottom-nav" aria-label="Navegación principal">
+      <button
+        class="nav-item active"
+        id="nav-catalog"
+        type="button"
+        data-view="catalog"
+        aria-current="page"
+      >
+        <span class="nav-icon" aria-hidden="true">📚</span>
+        <span class="nav-label">Catálogo</span>
+      </button>
+
+      <button
+        class="nav-item"
+        id="nav-collection"
+        type="button"
+        data-view="collection"
+      >
+        <span class="nav-icon" aria-hidden="true">🏆</span>
+        <span class="nav-label">Colección</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <!-- DIÁLOGO PARA HACER UNA CAPTURA -->
+  <dialog id="capture-dialog" class="capture-dialog">
+    <div class="dialog-header">
+      <div>
+        <p class="eyebrow">NUEVA CAPTURA</p>
+        <h2>¡Has encontrado un tren!</h2>
       </div>
 
-      <div class="toolbar">
-        <label class="searchbox"><span>⌕</span><input id="searchInput" type="search" placeholder="Buscar tren, serie u operadora…" autocomplete="off"></label>
-        <div class="chips" id="filterChips">
-          <button class="chip active" data-filter="Todos">Todos</button>
-          <button class="chip" data-filter="FGC">FGC</button>
-          <button class="chip" data-filter="Rodalies">Rodalies</button>
-          <button class="chip" data-filter="Metro">Metro</button>
-          <button class="chip" data-filter="Tram">Tram</button>
-          <button class="chip" data-filter="Turístico">Turístico</button>
-        </div>
-      </div>
-
-      <div class="section-heading"><div><p class="eyebrow">CATÁLOGO DE CATALUÑA</p><h2>Tu Pokédex</h2></div><span id="resultCount" class="muted"></span></div>
-      <div id="trainGrid" class="train-grid"></div>
-      <p class="footnote">Catálogo inicial de demostración: ampliaremos y verificaremos las series en la siguiente fase.</p>
-    </section>
-
-    <section id="detailView" class="hidden">
-      <button id="backButton" class="back-button">← Volver al catálogo</button>
-      <div id="trainDetail"></div>
-    </section>
-
-    <section id="collectionView" class="hidden">
-      <div class="section-heading"><div><p class="eyebrow">TU PROGRESO</p><h1>Mi colección</h1></div></div>
-      <div class="collection-summary panel">
-        <strong id="collectionProgress">0%</strong><span>de la colección completada</span>
-        <div class="progress"><i id="collectionBar"></i></div>
-      </div>
-      <div id="gallery" class="gallery"></div>
-      <p id="emptyGallery" class="empty-state">Todavía no hay capturas. Abre una ficha y completa tu primer reto.</p>
-    </section>
-  </main>
-
-  <nav class="bottom-nav" aria-label="Navegación principal">
-    <button class="nav-item active" data-view="homeView"><span>▦</span>Pokédex</button>
-    <button class="nav-item" data-view="collectionView"><span>▧</span>Colección</button>
-  </nav>
-
-  <dialog id="captureDialog" class="capture-dialog">
-    <form method="dialog" class="dialog-top"><div><p class="eyebrow">MISIÓN FOTOGRÁFICA</p><h2 id="captureTitle">Capturar misión</h2></div><button class="icon-button" aria-label="Cerrar">×</button></form>
-    <p id="captureDescription" class="muted"></p>
-    <div class="capture-options">
-      <button id="cameraButton" class="primary-button">◎ Abrir cámara</button>
-      <label class="secondary-button upload-button">↑ Elegir foto reciente<input id="galleryInput" type="file" accept="image/*" hidden></label>
+      <button
+        id="close-capture"
+        class="icon-button"
+        type="button"
+        aria-label="Cerrar captura"
+      >
+        ✕
+      </button>
     </div>
-    <p class="privacy-note">La foto debe tener una fecha de captura verificable de menos de 12 horas. Si no podemos verificarla, no la aceptaremos.</p>
-    <div id="cameraArea" class="camera-area hidden">
-      <video id="cameraVideo" autoplay playsinline></video>
-      <button id="takePhotoButton" class="primary-button">● Hacer foto</button>
+
+    <p class="dialog-description">
+      Haz una foto con la cámara o selecciona una imagen de tu dispositivo.
+    </p>
+
+    <!-- Vista previa de la cámara -->
+    <div class="camera-container">
+      <video
+        id="camera-video"
+        autoplay
+        playsinline
+        muted
+      ></video>
+
+      <canvas id="capture-canvas" hidden></canvas>
+
+      <div id="camera-placeholder" class="camera-placeholder">
+        <span aria-hidden="true">📷</span>
+        <p>La vista de la cámara aparecerá aquí</p>
+      </div>
     </div>
-    <div id="captureMessage" class="message" role="status"></div>
+
+    <div class="capture-actions">
+      <button
+        id="start-camera"
+        class="secondary-button"
+        type="button"
+      >
+        📷 Abrir cámara
+      </button>
+
+      <button
+        id="take-photo"
+        class="primary-button"
+        type="button"
+        disabled
+      >
+        Capturar foto
+      </button>
+    </div>
+
+    <div class="upload-divider">
+      <span>o</span>
+    </div>
+
+    <label for="photo-input" class="upload-button">
+      🖼️ Elegir una foto
+    </label>
+
+    <input
+      id="photo-input"
+      type="file"
+      accept="image/*"
+      hidden
+    >
+
+    <p class="capture-hint">
+      Si la misión requiere una foto reciente, la aplicación puede
+      comprobar la fecha EXIF de la imagen. Esta comprobación no
+      garantiza que la fecha sea auténtica.
+    </p>
+
+    <p
+      id="capture-message"
+      class="capture-message"
+      role="status"
+      aria-live="polite"
+    ></p>
   </dialog>
-  <canvas id="photoCanvas" class="hidden"></canvas>
-  <script src="app.js"></script>
+
+  <!-- MENSAJES TEMPORALES -->
+  <div
+    id="toast"
+    class="toast"
+    role="status"
+    aria-live="polite"
+  ></div>
+
 </body>
 </html>
