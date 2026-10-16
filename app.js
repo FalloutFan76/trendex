@@ -42,6 +42,21 @@ const trains = [
     ]
   },
   {
+    id: "fgc-ut115",
+    name: "FGC UT115",
+    series: "Serie 115",
+    operator: "FGC",
+    category: "Tren eléctrico",
+    glyph: "🚆",
+    image: "fgc-ut115.jpg",
+    color: "#e63946",
+    description: "Unidad de la flota de FGC, la más nueva para viajeros.",
+    specific: [
+      ["🚆", "Vista lateral", "Fotografía la unidad completa."],
+      ["🔢", "Señales luminosas", "Fotografía las luces del aviso sonoro de las puertas."]
+    ]
+  },
+  {
     id: "fgc-ut211",
     name: "FGC UT211",
     series: "Serie 211",
@@ -53,7 +68,7 @@ const trains = [
     description: "Unidad de la flota de FGC.",
     specific: [
       ["🚉", "Vista frontal", "Captura el frontal desde una zona pública."],
-      ["🔢", "Identificación", "Busca el número de la unidad."]
+      ["🔢", "Cabina", "Foto dentro de la cabina."]
     ]
   },
   {
@@ -68,7 +83,7 @@ const trains = [
     description: "Unidad eléctrica de FGC.",
     specific: [
       ["🚆", "Vista lateral", "Muestra la unidad completa en la foto."],
-      ["🛤️", "En la estación", "Incluye el entorno ferroviario."]
+      ["🛤️", "En el taller", "Incluye el taller de Martorell Enllaç."]
     ]
   },
   {
@@ -80,10 +95,10 @@ const trains = [
     glyph: "🚆",
     image: "fgc-ut400.jpg",
     color: "#6a4c93",
-    description: "Unidad identificada como UT400 en tu colección de imágenes.",
+    description: "Es el tren Granota, ya lo conoces",
     specific: [
       ["🚆", "Vista lateral", "Fotografía el tren completo."],
-      ["🔢", "Detalles", "Captura los números o distintivos visibles."]
+      ["🔢", "Granota", "Captura los los faros superores, le dan su apodo."]
     ]
   },
   {
@@ -96,6 +111,36 @@ const trains = [
     image: "renfe-447.jpg",
     color: "#f4a261",
     description: "Unidad eléctrica de la serie 447 de Renfe.",
+    specific: [
+      ["🚉", "Vista frontal", "Fotografía el frontal del tren."],
+      ["🔢", "Identificación", "Captura el número de la unidad."]
+    ]
+  },
+ {
+    id: "renfe-448",
+    name: "Renfe 448",
+    series: "Serie 448",
+    operator: "Rodalies",
+    category: "Media Distancia",
+    glyph: "🚆",
+    image: "renfe-448.jpg",
+    color: "#f4a261",
+    description: "Unidad eléctrica de la serie 448 de Renfe.",
+    specific: [
+      ["🚉", "Vista frontal", "Fotografía el frontal del tren."],
+      ["🔢", "Identificación", "Captura el número de la unidad."]
+    ]
+  },
+    {
+    id: "renfe-449",
+    name: "Renfe 449",
+    series: "Serie 449",
+    operator: "Rodalies",
+    category: "Media Distancia",
+    glyph: "🚆",
+    image: "renfe-449.jpg",
+    color: "#f4a261",
+    description: "Unidad eléctrica de la serie 449 de Renfe.",
     specific: [
       ["🚉", "Vista frontal", "Fotografía el frontal del tren."],
       ["🔢", "Identificación", "Captura el número de la unidad."]
@@ -157,10 +202,115 @@ const trains = [
     color: "#2a9d8f",
     description: "Unidad de la serie 470 de Renfe.",
     specific: [
-      ["🚉", "Vista frontal", "Fotografía el frontal desde un lugar seguro."],
+      ["🚉", "Vista frontal", "Fotografía el frontal desde las vias."],
       ["🛤️", "En ruta", "Incluye el entorno ferroviario en la captura."]
     ]
-  }
+  },
+  {
+    id: "renfe-100",
+    name: "Renfe s100",
+    series: "Serie s100",
+    operator: "Renfe",
+    category: "Alta Velocidad",
+    glyph: "🚆",
+    image: "renfe-100.jpg",
+    color: "#2a9d8f",
+    description: "Unidad de la serie 100 del Ave, esta basado en el TGV Francés y es el primer Ave de España.",
+    specific: [
+      ["🚉", "Vista frontal", "Fotografía el frontal desde un lugar seguro."],
+      ["🌁", "Sobre puente", "Haz la foto desde un puente."]
+    ]
+  },
+   {
+    id: "renfe-102",
+    name: "Renfe s102",
+    series: "Serie s102",
+    operator: "Renfe",
+    category: "Alta Velocidad",
+    glyph: "🚆",
+    image: "renfe-112.jpg",
+    color: "#2a9d8f",
+    description: "Unidad de la serie 102 (Pato) del Ave.",
+    specific: [
+      ["🚉", "Vista frontal", "Fotografía el pico del pato desde un lugar seguro."],
+      ["🌁", "Sobre puente", "Haz la foto desde un puente."]
+    ]
+  },
+   {
+    id: "renfe-103",
+    name: "Renfe s103",
+    series: "Serie s103",
+    operator: "Renfe",
+    category: "Alta Velocidad",
+    glyph: "🚆",
+    image: "renfe-103.jpg",
+    color: "#2a9d8f",
+    description: "Unidad de la serie 103 (Velaro) del Ave, esta basado en el Ice 3 de Alemania.",
+    specific: [
+      ["🚉", "Vista frontal", "Fotografía el frontal desde un lugar seguro."],
+      ["🌁", "Sobre puente", "Haz la foto desde un puente."]
+    ]
+  },
+  {
+    id: "renfe-120",
+    name: "Renfe s120",
+    series: "Serie s120",
+    operator: "Renfe",
+    category: "Alvia",
+    glyph: "🚆",
+    image: "renfe-120.jpg",
+    color: "#2a9d8f",
+    description: "Unidad de la serie 120 de Alvia, para largas distancias.",
+    specific: [
+      ["🚉", "Vista frontal", "Fotografía el frontal desde un lugar seguro."],
+      ["🌁", "Sobre puente", "Haz la foto desde un puente."]
+    ]
+  },
+   {
+    id: "renfe-130",
+    name: "Renfe s130",
+    series: "Serie s130",
+    operator: "Renfe",
+    category: "Alta Velocidad",
+    glyph: "🚆",
+    image: "renfe-130.jpg",
+    color: "#2a9d8f",
+    description: "Unidad de la serie 130 (Patito) del Ave.",
+    specific: [
+      ["🚉", "Vista frontal", "Fotografía el frontal desde un lugar seguro."],
+      ["🌁", "Sobre puente", "Haz la foto desde un puente."]
+    ]
+  },
+ {
+    id: "renfe-252",
+    name: "Renfe 252",
+    series: "Serie 252",
+    operator: "Renfe",
+    category: "Locomotora",
+    glyph: "🚆",
+    image: "renfe-252.jpg",
+    color: "#2a9d8f",
+    description: "Locomotora de la serie 252 de Renfe, aún carga el Talgo.",
+    specific: [
+      ["🚉", "Vista frontal", "Fotografía el frontal desde un lugar seguro."],
+      ["🌁", "En el andén", "Haz la foto desde el andén."]
+    ]
+  },
+  {
+    id: "renfe-333",
+    name: "Renfe 333",
+    series: "Serie 333",
+    operator: "Renfe",
+    category: "Locomotora",
+    glyph: "🚆",
+    image: "renfe-333.jpg",
+    color: "#2a9d8f",
+    description: "Locomotora de la serie 333 de Renfe, recuerdos del tren de la Fresa.",
+    specific: [
+      ["🚉", "Vista frontal", "Fotografía el frontal desde un lugar seguro."],
+      ["🌁", "En su camino", "Haz la foto desde las vias."]
+    ]
+  },
 ];
 
 const $ = id => document.getElementById(id);
