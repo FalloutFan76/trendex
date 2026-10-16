@@ -12,18 +12,153 @@ const common = [
 
 const trains = [
   {
-    id: "tren-prueba",
-    name: "Tren de prueba",
-    series: "Serie de prueba",
+    id: "fgc-ut112",
+    name: "FGC UT112",
+    series: "Serie 112",
     operator: "FGC",
+    category: "Tren eléctrico",
+    glyph: "🚆",
+    image: "fgc-ut112.jpg",
+    color: "#e63946",
+    description: "Unidad eléctrica de Ferrocarrils de la Generalitat de Catalunya.",
+    specific: [
+      ["🚆", "Vista lateral", "Fotografía la unidad completa desde un lugar seguro."],
+      ["🔢", "Identificación", "Captura los números de la unidad." ]
+    ]
+  },
+  {
+    id: "fgc-ut113",
+    name: "FGC UT113",
+    series: "Serie 113",
+    operator: "FGC",
+    category: "Tren eléctrico",
+    glyph: "🚆",
+    image: "fgc-ut113.jpg",
+    color: "#e63946",
+    description: "Unidad de la flota de FGC.",
+    specific: [
+      ["🚆", "Vista lateral", "Fotografía la unidad completa."],
+      ["🔢", "Identificación", "Fotografía el número identificativo."]
+    ]
+  },
+  {
+    id: "fgc-ut211",
+    name: "FGC UT211",
+    series: "Serie 211",
+    operator: "FGC",
+    category: "Tren eléctrico",
+    glyph: "🚆",
+    image: "fgc-ut211.jpg",
+    color: "#457b9d",
+    description: "Unidad de la flota de FGC.",
+    specific: [
+      ["🚉", "Vista frontal", "Captura el frontal desde una zona pública."],
+      ["🔢", "Identificación", "Busca el número de la unidad."]
+    ]
+  },
+  {
+    id: "fgc-ut213",
+    name: "FGC UT213",
+    series: "Serie 213",
+    operator: "FGC",
+    category: "Tren eléctrico",
+    glyph: "🚆",
+    image: "fgc-ut213.jpg",
+    color: "#457b9d",
+    description: "Unidad eléctrica de FGC.",
+    specific: [
+      ["🚆", "Vista lateral", "Muestra la unidad completa en la foto."],
+      ["🛤️", "En la estación", "Incluye el entorno ferroviario."]
+    ]
+  },
+  {
+    id: "fgc-ut400",
+    name: "FGC UT400",
+    series: "Serie 400",
+    operator: "FGC",
+    category: "Tren eléctrico",
+    glyph: "🚆",
+    image: "fgc-ut400.jpg",
+    color: "#6a4c93",
+    description: "Unidad identificada como UT400 en tu colección de imágenes.",
+    specific: [
+      ["🚆", "Vista lateral", "Fotografía el tren completo."],
+      ["🔢", "Detalles", "Captura los números o distintivos visibles."]
+    ]
+  },
+  {
+    id: "renfe-447",
+    name: "Renfe 447",
+    series: "Serie 447",
+    operator: "Renfe",
     category: "Cercanías",
     glyph: "🚆",
-    image: "tren-prueba.jpg",
-    color: "#f72585",
-    description: "Tarjeta temporal para comprobar el catálogo.",
+    image: "renfe-447.jpg",
+    color: "#f4a261",
+    description: "Unidad eléctrica de la serie 447 de Renfe.",
     specific: [
-      ["🚆", "Foto lateral", "Fotografía el tren desde una zona pública."],
-      ["🌆", "Foto del entorno", "Incluye el entorno en la fotografía."]
+      ["🚉", "Vista frontal", "Fotografía el frontal del tren."],
+      ["🔢", "Identificación", "Captura el número de la unidad."]
+    ]
+  },
+  {
+    id: "renfe-450",
+    name: "Renfe 450",
+    series: "Serie 450",
+    operator: "Renfe",
+    category: "Cercanías",
+    glyph: "🚆",
+    image: "renfe-450.jpg",
+    color: "#f4a261",
+    description: "Tren de dos pisos de la serie 450.",
+    specific: [
+      ["🏢", "Dos pisos", "Intenta mostrar la altura de los coches."],
+      ["🚆", "Vista lateral", "Fotografía el tren completo."]
+    ]
+  },
+  {
+    id: "renfe-451",
+    name: "Renfe 451",
+    series: "Serie 451",
+    operator: "Renfe",
+    category: "Cercanías",
+    glyph: "🚆",
+    image: "renfe-451.jpg",
+    color: "#f4a261",
+    description: "Unidad de dos pisos de la serie 451.",
+    specific: [
+      ["🚉", "Vista frontal", "Fotografía el frontal."],
+      ["🚆", "Vista lateral", "Intenta mostrar varios coches."]
+    ]
+  },
+  {
+    id: "renfe-465",
+    name: "Renfe 465",
+    series: "Serie 465",
+    operator: "Renfe",
+    category: "Cercanías",
+    glyph: "🚆",
+    image: "renfe-465.jpg",
+    color: "#2a9d8f",
+    description: "Unidad eléctrica de la serie 465.",
+    specific: [
+      ["🚆", "Vista lateral", "Muestra la unidad completa."],
+      ["🔢", "Identificación", "Captura el número de la unidad."]
+    ]
+  },
+  {
+    id: "renfe-470",
+    name: "Renfe 470",
+    series: "Serie 470",
+    operator: "Renfe",
+    category: "Media Distancia",
+    glyph: "🚆",
+    image: "renfe-470.jpg",
+    color: "#2a9d8f",
+    description: "Unidad de la serie 470 de Renfe.",
+    specific: [
+      ["🚉", "Vista frontal", "Fotografía el frontal desde un lugar seguro."],
+      ["🛤️", "En ruta", "Incluye el entorno ferroviario en la captura."]
     ]
   }
 ];
