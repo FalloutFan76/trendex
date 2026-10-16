@@ -311,6 +311,21 @@ const trains = [
       ["🌁", "En su camino", "Haz la foto desde las vias."]
     ]
   },
+  {
+    id: "tram-302",
+    name: "Tram Citadis",
+    series: "Serie 302",
+    operator: "Tram",
+    category: "Tanvia",
+    glyph: "🚆",
+    image: "tram-citadis.jpg",
+    color: "#2a9d8f",
+    description: "El iconico tranvia de la ciudad de Barcelona.",
+    specific: [
+      ["🚉", "Vista frontal", "Fotografía el frontal desde un lugar seguro."],
+      ["🌁", "En tu camino y el suyo", "Haz la foto desde las vias."]
+    ]
+  },
 ];
 
 const $ = id => document.getElementById(id);
