@@ -1,6 +1,7 @@
+
 /* ========================================
    TRENDEX — LÓGICA CORREGIDA
-   Compatible con los IDs del HTML actual
+   Compatible con el HTML actual
 ======================================== */
 
 const common = [
@@ -11,26 +12,6 @@ const common = [
 
 const $ = id => document.getElementById(id);
 
-const find = (id, selector) => $(id) || document.querySelector(selector);
-
-const el = {
-  grid: () => find("train-grid", "#trainGrid"),
-  search: () => find("search-input", "#searchInput"),
-  filters: () => document.querySelector(".filter-chips, #filter-chips"),
-  detail: () => find("train-detail", "#trainDetail"),
-  detailView: () => find("detail-view", "#detailView"),
-  collection: () => find("collection-view", "#collectionView"),
-  catalog: () => document.querySelector(".hero")?.closest("main") || document.querySelector("main"),
-  gallery: () => find("photo-gallery", "#gallery"),
-  galleryEmpty: () => find("gallery-empty", "#emptyGallery"),
-  dialog: () => $("capture-dialog"),
-  video: () => find("camera-video", "#cameraVideo"),
-  canvas: () => find("capture-canvas", "#photoCanvas"),
-  cameraPlaceholder: () => $("camera-placeholder"),
-  message: () => find("capture-message", "#captureMessage"),
-  photoInput: () => find("photo-input", "#galleryInput")
-};
-
 const state = {
   filter: "Todos",
   query: "",
@@ -39,8 +20,6 @@ const state = {
   stream: null,
   photos: loadPhotos()
 };
-
-const totalMissions = trains.length * 5;
 
 function loadPhotos() {
   try {
@@ -58,24 +37,22 @@ function savePhotos() {
   }
 }
 
-function notify(text) {
+function notify(message) {
   const toast = $("toast");
-
-  if (toast) {
-    toast.textContent = text;
-    toast.classList.add("show");
-
-    clearTimeout(notify.timer);
-    notify.timer = setTimeout(() => {
-      toast.classList.remove("show");
-    }, 2800);
-  } else {
-    console.info("TrenDéx:", text);
+  if (!toast) {
+    console.info("TrenDéx:", message);
+    return;
   }
+
+  toast.textContent = message;
+  toast.classList.add("show");
+
+  clearTimeout(notify.timer);
+  notify.timer = setTimeout(() => toast.classList.remove("show"), 2800);
 }
 
 function allMissions(train) {
-  return [...common, ...train.specific].map((m, i) => ({
+  return [...common, ...(train.specific || [])].map((m, i) => ({
     id: `${train.id}-${i}`,
     icon: m[0],
     title: m[1],
@@ -90,131 +67,123 @@ function completedCount() {
 
 function updateProgress() {
   const count = completedCount();
-  const percent = Math.round(count / totalMissions * 100);
+  const total = trains.reduce(
+    (sum, train) => sum + allMissions(train).length,
+    0
+  );
+  const percent = total ? Math.round(count / total * 100) : 0;
 
-  // Estadísticas de la portada del HTML actual.
   if ($("discovered-count")) {
     $("discovered-count").textContent = trains.length;
   }
-
   if ($("captured-count")) {
     $("captured-count").textContent = count;
   }
-
   if ($("completion-count")) {
     $("completion-count").textContent = `${percent}%`;
   }
-
-  // Progreso de la colección.
   if ($("collection-progress")) {
-    $("collection-progress").textContent = `${percent}%`;
+    $("collection-progress").setAttribute("aria-valuenow", percent);
   }
-
   if ($("collection-progress-bar")) {
     $("collection-progress-bar").style.width = `${percent}%`;
   }
-
-  // Compatibilidad con versiones anteriores del HTML.
-  if ($("caughtCount")) $("caughtCount").textContent = count;
-  if ($("totalCount")) $("totalCount").textContent = totalMissions;
-  if ($("progressBar")) $("progressBar").style.width = `${percent}%`;
-  if ($("progressLabel")) $("progressLabel").textContent = `${percent}% completado`;
-  if ($("collectionProgress")) $("collectionProgress").textContent = `${percent}%`;
-  if ($("collectionBar")) $("collectionBar").style.width = `${percent}%`;
+  if ($("collection-summary-text")) {
+    $("collection-summary-text").textContent =
+      `${count} de ${total} misiones completadas`;
+  }
 }
 
 function safeImagePath(filename) {
-  return `images/${encodeURIComponent(filename)}`;
+  return `images/${encodeURIComponent(filename || "")}`;
+}
+
+function applyImageFallback(container) {
+  container.querySelectorAll("img[data-fallback]").forEach(img => {
+    const fallback = img.parentElement.querySelector(".train-glyph, .detail-glyph");
+
+    const showFallback = () => {
+      img.hidden = true;
+      if (fallback) fallback.hidden = false;
+    };
+
+    img.addEventListener("error", showFallback, { once: true });
+
+    if (img.complete && img.naturalWidth === 0) {
+      showFallback();
+    }
+  });
 }
 
 function renderTrains() {
-  const grid = el.grid();
-
+  const grid = $("train-grid");
   if (!grid) {
-    console.error("TrenDéx: no se encuentra #train-grid en el HTML.");
+    console.error('TrenDéx: no existe el elemento con id="train-grid".');
     return;
   }
 
   const query = state.query.trim().toLocaleLowerCase("es");
 
-  const list = trains.filter(t => {
-    const matchesFilter =
-      state.filter === "Todos" || t.operator === state.filter;
+  const list = trains.filter(train => {
+    const filterMatch =
+      state.filter === "Todos" || train.operator === state.filter;
 
-    const text = `${t.name} ${t.series} ${t.operator} ${t.category}`
-      .toLocaleLowerCase("es");
+    const searchable = [
+      train.name,
+      train.series,
+      train.operator,
+      train.category
+    ].join(" ").toLocaleLowerCase("es");
 
-    return matchesFilter && text.includes(query);
+    return filterMatch && searchable.includes(query);
   });
 
-  const resultCount = $("result-count") || $("resultCount");
-
-  if (resultCount) {
-    resultCount.textContent = `${list.length} trenes`;
+  const visibleCount = $("visible-count");
+  if (visibleCount) {
+    visibleCount.textContent = `${list.length} tren${list.length === 1 ? "" : "es"}`;
   }
 
-  grid.innerHTML = list.length
-    ? list.map((t, i) => {
-        const missions = allMissions(t);
-        const done = missions.filter(m => state.photos[m.id]).length;
-        const index = String(trains.indexOf(t) + 1).padStart(3, "0");
+  const emptyState = $("empty-state");
+  if (emptyState) emptyState.hidden = list.length !== 0;
 
-        return `
-          <button
-            type="button"
-            class="train-card"
-            data-train="${t.id}"
-            style="animation-delay:${Math.min(i, 8) * 35}ms"
-            aria-label="Ver ficha de ${t.name}"
+  grid.innerHTML = list.map((train, i) => {
+    const missions = allMissions(train);
+    const done = missions.filter(m => state.photos[m.id]).length;
+    const index = String(trains.indexOf(train) + 1).padStart(3, "0");
+
+    return `
+      <button
+        type="button"
+        class="train-card"
+        data-train="${train.id}"
+        style="animation-delay:${Math.min(i, 8) * 35}ms"
+        aria-label="Ver ficha de ${train.name}"
+      >
+        <div class="train-art" style="--soft:${train.color || "#f72585"}18">
+          <img
+            class="train-photo"
+            data-fallback
+            src="${safeImagePath(train.image)}"
+            alt="${train.name}"
+            loading="lazy"
           >
-            <div class="train-art" style="--soft:${t.color}18">
-              <img
-                class="train-photo"
-                src="${safeImagePath(t.image)}"
-                alt="${t.name}"
-                loading="lazy"
-              >
-              <span class="train-glyph" hidden aria-hidden="true">${t.glyph}</span>
-
-              <span class="train-index">#${index}</span>
-              <span class="train-state">${done === missions.length ? "✓ Completo" : `${done}/5`}</span>
-            </div>
-
-            <div class="train-info">
-              <p class="operator">${t.operator} · ${t.category}</p>
-              <h3>${t.name}</h3>
-              <p>${t.series}</p>
-
-              <div class="mini-progress" aria-label="${done} de 5 misiones">
-                <i style="width:${done / missions.length * 100}%;background:${t.color}"></i>
-              </div>
-            </div>
-          </button>
-        `;
-      }).join("")
-    : `
-      <div class="empty-state">
-        <p>🚆</p>
-        <h3>No encontramos trenes</h3>
-        <p>Prueba otra búsqueda o selecciona otro filtro.</p>
-      </div>
+          <span class="train-glyph" hidden aria-hidden="true">${train.glyph || "🚆"}</span>
+          <span class="train-index">#${index}</span>
+          <span class="train-state">${done === missions.length ? "✓ Completo" : `${done}/${missions.length}`}</span>
+        </div>
+        <div class="train-info">
+          <p class="operator">${train.operator} · ${train.category}</p>
+          <h3>${train.name}</h3>
+          <p>${train.series}</p>
+          <div class="mini-progress">
+            <i style="width:${missions.length ? done / missions.length * 100 : 0}%;background:${train.color || "#f72585"}"></i>
+          </div>
+        </div>
+      </button>
     `;
+  }).join("");
 
-  // Mostrar el emoji si no se encuentra la foto.
-  grid.querySelectorAll(".train-photo").forEach(img => {
-    img.addEventListener("error", () => {
-      img.hidden = true;
-      const glyph = img.parentElement?.querySelector(".train-glyph");
-      if (glyph) glyph.hidden = false;
-    }, { once: true });
-
-    // Por si el navegador ya ha terminado de cargar una imagen rota.
-    if (img.complete && img.naturalWidth === 0) {
-      img.hidden = true;
-      const glyph = img.parentElement?.querySelector(".train-glyph");
-      if (glyph) glyph.hidden = false;
-    }
-  });
+  applyImageFallback(grid);
 
   grid.querySelectorAll("[data-train]").forEach(button => {
     button.addEventListener("click", () => openTrain(button.dataset.train));
@@ -222,100 +191,92 @@ function renderTrains() {
 }
 
 function setActiveNavigation(view) {
-  document.querySelectorAll(".nav-item").forEach(button => {
-    const isCatalog = button.id === "nav-catalog";
-    const isCollection = button.id === "nav-collection";
-
-    button.classList.toggle(
-      "active",
-      view === "detail-view"
-        ? isCatalog
-        : view === "collection-view"
-          ? isCollection
-          : isCatalog
-    );
-  });
+  $("nav-catalog")?.classList.toggle("active", view !== "collection-view");
+  $("nav-collection")?.classList.toggle("active", view === "collection-view");
 }
 
-function showCatalogSections(show) {
-  // El HTML actual no necesita un elemento #homeView.
-  document.querySelectorAll(
-    "main > .hero, main > .stats, main > .catalog-section"
-  ).forEach(section => {
-    section.classList.toggle("hidden", !show);
-  });
-}
+function showView(view) {
+  const catalog = $("catalog-view");
+  const detail = $("detail-view");
+  const collection = $("collection-view");
 
-function openTrain(id) {
-  const train = trains.find(t => t.id === id);
-  if (!train) return;
+  if (catalog) catalog.hidden = view !== "catalog-view";
+  if (detail) detail.hidden = view !== "detail-view";
+  if (collection) collection.hidden = view !== "collection-view";
 
-  state.selected = train;
+  catalog?.classList.toggle("active", view === "catalog-view");
+  detail?.classList.toggle("active", view === "detail-view");
+  collection?.classList.toggle("active", view === "collection-view");
 
-  showCatalogSections(false);
+  if (view === "catalog-view") {
+    state.selected = null;
+    renderTrains();
+  }
 
-  el.collection()?.classList.add("hidden");
-  el.detailView()?.classList.remove("hidden");
+  if (view === "collection-view") {
+    renderGallery();
+    renderMissions();
+  }
 
-  renderDetail();
-  setActiveNavigation("detail-view");
+  setActiveNavigation(view);
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
+function openTrain(id) {
+  const train = trains.find(item => String(item.id) === String(id));
+  if (!train) return;
+
+  state.selected = train;
+  renderDetail();
+  showView("detail-view");
+}
+
 function renderDetail() {
-  const t = state.selected;
-  const container = el.detail();
+  const train = state.selected;
+  const container = $("train-detail");
+  if (!train || !container) return;
 
-  if (!t || !container) return;
-
-  const missions = allMissions(t);
+  const missions = allMissions(train);
   const done = missions.filter(m => state.photos[m.id]).length;
 
   container.innerHTML = `
     <div class="detail-hero">
-      <div class="detail-art" style="--soft:${t.color}18">
+      <div class="detail-art" style="--soft:${train.color || "#f72585"}18">
         <img
           class="detail-photo"
-          src="${safeImagePath(t.image)}"
-          alt="${t.name}"
+          data-fallback
+          src="${safeImagePath(train.image)}"
+          alt="${train.name}"
         >
-        <span class="detail-glyph" hidden aria-hidden="true">${t.glyph}</span>
+        <span class="detail-glyph" hidden aria-hidden="true">${train.glyph || "🚆"}</span>
       </div>
-
       <div class="detail-copy">
-        <p class="operator">${t.operator} · ${t.category}</p>
-        <h1>${t.name}</h1>
-        <p><strong>Serie:</strong> ${t.series}</p>
-        <p>${t.description}</p>
-
+        <p class="operator">${train.operator} · ${train.category}</p>
+        <h1>${train.name}</h1>
+        <p><strong>Serie:</strong> ${train.series}</p>
+        <p>${train.description || ""}</p>
         <div class="mini-progress">
-          <i style="width:${done / missions.length * 100}%;background:${t.color}"></i>
+          <i style="width:${missions.length ? done / missions.length * 100 : 0}%;background:${train.color || "#f72585"}"></i>
         </div>
-
         <p>${done} de ${missions.length} misiones completadas</p>
       </div>
     </div>
-
     <div class="mission-header">
       <h2>Misiones fotográficas</h2>
       <span class="muted">${done}/${missions.length}</span>
     </div>
-
     <div class="missions-list">
-      ${missions.map(m => {
-        const photo = state.photos[m.id];
-
+      ${missions.map(mission => {
+        const photo = state.photos[mission.id];
         return `
           <article class="mission ${photo ? "completed" : ""}">
-            <div class="mission-icon">${photo ? "✓" : m.icon}</div>
-
+            <div class="mission-icon">${photo ? "✓" : mission.icon}</div>
             <div class="mission-copy">
-              <strong>${m.title}</strong>
-              <p>${photo ? "Foto guardada en tu colección." : m.description}</p>
-              <small>${m.type}</small>
+              <strong>${mission.title}</strong>
+              <p>${photo ? "Foto guardada en tu colección." : mission.description}</p>
+              <small>${mission.type}</small>
             </div>
-
-            <button type="button" class="primary-button" data-mission="${m.id}">
+            <button type="button" class="primary-button" data-mission="${mission.id}">
               ${photo ? "Ver foto" : "Capturar"}
             </button>
           </article>
@@ -324,54 +285,43 @@ function renderDetail() {
     </div>
   `;
 
-  const image = container.querySelector(".detail-photo");
-  const glyph = container.querySelector(".detail-glyph");
-
-  image?.addEventListener("error", () => {
-    image.hidden = true;
-    if (glyph) glyph.hidden = false;
-  }, { once: true });
-
-  if (image?.complete && image.naturalWidth === 0) {
-    image.hidden = true;
-    if (glyph) glyph.hidden = false;
-  }
+  applyImageFallback(container);
 
   container.querySelectorAll("[data-mission]").forEach(button => {
     button.addEventListener("click", () => {
       const id = button.dataset.mission;
-
-      if (state.photos[id]) {
-        showExistingPhoto(id);
-      } else {
-        openCapture(id);
-      }
+      if (state.photos[id]) showExistingPhoto(id);
+      else openCapture(id);
     });
   });
 }
 
-function showView(view) {
-  const isCollection = view === "collection-view";
+function renderMissions() {
+  const container = $("missions-list");
+  if (!container) return;
 
-  showCatalogSections(!isCollection && view !== "detail-view");
+  container.innerHTML = trains.map(train => {
+    const missions = allMissions(train);
+    const done = missions.filter(m => state.photos[m.id]).length;
 
-  el.detailView()?.classList.toggle("hidden", view !== "detail-view");
-  el.collection()?.classList.toggle("hidden", !isCollection);
+    return `
+      <article class="mission-summary">
+        <strong>${train.glyph || "🚆"} ${train.name}</strong>
+        <p>${done} de ${missions.length} misiones completadas</p>
+        <button type="button" class="secondary-button" data-open-train="${train.id}">
+          Ver misiones
+        </button>
+      </article>
+    `;
+  }).join("");
 
-  if (view === "catalog-view") {
-    state.selected = null;
-    showCatalogSections(true);
-  }
-
-  if (isCollection) renderGallery();
-  if (view === "catalog-view") renderTrains();
-
-  setActiveNavigation(isCollection ? "collection-view" : "catalog-view");
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  container.querySelectorAll("[data-open-train]").forEach(button => {
+    button.addEventListener("click", () => openTrain(button.dataset.openTrain));
+  });
 }
 
 function openCapture(missionId) {
-  const dialog = el.dialog();
+  const dialog = $("capture-dialog");
   if (!dialog || !state.selected) return;
 
   const mission = allMissions(state.selected).find(m => m.id === missionId);
@@ -379,20 +329,18 @@ function openCapture(missionId) {
 
   state.mission = missionId;
 
-  const title = dialog.querySelector(".dialog-header h2, .dialog-top h2");
+  const title = dialog.querySelector(".dialog-header h2");
   const description = dialog.querySelector(".dialog-description");
-  const msg = el.message();
-  const cameraContainer = dialog.querySelector(".camera-container");
+  const message = $("capture-message");
 
   if (title) title.textContent = mission.title;
   if (description) description.textContent = mission.description;
-  if (msg) {
-    msg.textContent = "";
-    msg.className = "message";
+  if (message) {
+    message.textContent = "";
+    message.className = "capture-message";
   }
 
-  cameraContainer?.classList.add("hidden");
-
+  $("camera-placeholder")?.classList.remove("hidden");
   if (!dialog.open) dialog.showModal();
 }
 
@@ -402,21 +350,16 @@ function stopCamera() {
     state.stream = null;
   }
 
-  const video = el.video();
+  const video = $("camera-video");
   if (video) video.srcObject = null;
+
+  $("take-photo")?.setAttribute("disabled", "");
 }
 
 async function openCamera() {
-  const msg = el.message();
-
-  if (msg) {
-    msg.textContent = "";
-    msg.className = "message";
-  }
-
   try {
     if (!navigator.mediaDevices?.getUserMedia) {
-      throw new Error("La cámara requiere HTTPS y un navegador compatible.");
+      throw new Error("La cámara necesita HTTPS y un navegador compatible.");
     }
 
     stopCamera();
@@ -426,35 +369,34 @@ async function openCamera() {
       audio: false
     });
 
-    const video = el.video();
-    if (!video) throw new Error("No se encuentra el elemento de vídeo en el HTML.");
+    const video = $("camera-video");
+    if (!video) throw new Error("No se encuentra la cámara en el HTML.");
 
     video.srcObject = state.stream;
     await video.play();
 
-    const cameraContainer = document.querySelector(".camera-container");
-    cameraContainer?.classList.remove("hidden");
-
-    el.cameraPlaceholder()?.classList.add("hidden");
+    $("camera-placeholder")?.classList.add("hidden");
+    $("take-photo")?.removeAttribute("disabled");
+    showMessage("Cámara lista. Puedes hacer la captura.", "success");
   } catch (error) {
-    showMessage(error.message || "No se pudo abrir la cámara. Revisa los permisos.", "error");
+    showMessage(error.message || "No se pudo abrir la cámara.", "error");
   }
 }
 
 function showMessage(text, type = "") {
-  const msg = el.message();
-
-  if (msg) {
-    msg.textContent = text;
-    msg.className = `message ${type}`;
-  } else {
+  const message = $("capture-message");
+  if (!message) {
     notify(text);
+    return;
   }
+
+  message.textContent = text;
+  message.className = `capture-message ${type}`;
 }
 
 function captureNow() {
-  const video = el.video();
-  const canvas = el.canvas();
+  const video = $("camera-video");
+  const canvas = $("capture-canvas");
 
   if (!video || !canvas || !video.videoWidth) {
     showMessage("La cámara aún se está iniciando. Espera un momento.", "error");
@@ -463,17 +405,11 @@ function captureNow() {
 
   canvas.width = video.videoWidth;
   canvas.height = video.videoHeight;
-
-  const context = canvas.getContext("2d");
-  context.drawImage(video, 0, 0);
+  canvas.getContext("2d").drawImage(video, 0, 0);
 
   canvas.toBlob(blob => {
-    if (!blob) {
-      showMessage("No se pudo procesar la fotografía.", "error");
-      return;
-    }
-
-    storePhoto(blob, new Date().toISOString(), "camera");
+    if (blob) storePhoto(blob, new Date().toISOString(), "camera");
+    else showMessage("No se pudo procesar la fotografía.", "error");
   }, "image/jpeg", 0.88);
 }
 
@@ -487,7 +423,7 @@ function storePhoto(blob, iso, source) {
     capturedAt > now ||
     now - capturedAt >= 12 * 60 * 60 * 1000
   ) {
-    showMessage("No se puede verificar una fecha de captura válida de las últimas 12 horas.", "error");
+    showMessage("La foto debe tener una fecha válida de las últimas 12 horas.", "error");
     return;
   }
 
@@ -516,47 +452,42 @@ function storePhoto(blob, iso, source) {
     updateProgress();
     renderDetail();
     renderGallery();
-    showMessage("¡Misión completada! La foto se ha guardado en este navegador.", "success");
+    showMessage("¡Misión completada! Foto guardada en este navegador.", "success");
 
     setTimeout(() => {
-      const dialog = el.dialog();
+      const dialog = $("capture-dialog");
       if (dialog?.open) dialog.close();
     }, 900);
   };
 
-  reader.onerror = () => showMessage("No se pudo guardar la imagen.", "error");
+  reader.onerror = () => showMessage("No se pudo guardar la imagen.", "error);
   reader.readAsDataURL(blob);
 }
 
 function showExistingPhoto(id) {
   const item = state.photos[id];
-  const dialog = el.dialog();
-  if (!item || !dialog) return;
+  const dialog = $("capture-dialog");
+  const message = $("capture-message");
+  if (!item || !dialog || !message) return;
 
-  const title = dialog.querySelector(".dialog-header h2, .dialog-top h2");
+  const title = dialog.querySelector(".dialog-header h2");
   const description = dialog.querySelector(".dialog-description");
-  const msg = el.message();
 
   if (title) title.textContent = item.missionName;
   if (description) description.textContent = item.trainName;
 
-  if (msg) {
-    msg.replaceChildren();
-
-    const img = document.createElement("img");
-    img.src = item.data;
-    img.alt = item.missionName;
-    img.style.cssText = "display:block;width:100%;border-radius:14px;margin-top:12px";
-
-    msg.appendChild(img);
-    msg.className = "message";
-  }
+  message.replaceChildren();
+  const img = document.createElement("img");
+  img.src = item.data;
+  img.alt = item.missionName;
+  img.style.cssText = "display:block;width:100%;border-radius:14px;margin-top:12px";
+  message.appendChild(img);
 
   if (!dialog.open) dialog.showModal();
 }
 
 function renderGallery() {
-  const gallery = el.gallery();
+  const gallery = $("photo-gallery");
   if (!gallery) return;
 
   const items = Object.values(state.photos)
@@ -567,18 +498,16 @@ function renderGallery() {
       <img src="${item.data}" alt="${item.missionName}" loading="lazy">
       <div>
         <strong>${item.missionName}</strong>
-        <p>${item.trainName} · ${new Date(item.capturedAt).toLocaleString("es-ES", {
-          day: "2-digit",
-          month: "short",
-          hour: "2-digit",
-          minute: "2-digit"
-        })}</p>
+        <p>${item.trainName} · ${new Date(item.capturedAt).toLocaleString("es-ES")}</p>
       </div>
     </article>
   `).join("");
 
-  const empty = el.galleryEmpty();
-  if (empty) empty.classList.toggle("hidden", items.length > 0);
+  const empty = $("gallery-empty");
+  if (empty) empty.hidden = items.length > 0;
+
+  const count = $("gallery-count");
+  if (count) count.textContent = `${items.length} fotos`;
 }
 
 async function readExifDate(file) {
@@ -594,31 +523,21 @@ async function readExifDate(file) {
 
     const marker = view.getUint8(p + 1);
     const length = view.getUint16(p + 2);
-
     if (length < 2) break;
 
     if (marker === 0xE1 && p + length + 2 <= view.byteLength) {
       const start = p + 4;
-
-      if (start + 14 > view.byteLength || view.getUint32(start) !== 0x45786966) {
-        return null;
-      }
+      if (start + 14 > view.byteLength || view.getUint32(start) !== 0x45786966) return null;
 
       const tiff = start + 6;
       const byteOrder = view.getUint16(tiff);
       const little = byteOrder === 0x4949;
-
       if (!little && byteOrder !== 0x4D4D) return null;
 
       const read16 = offset =>
-        offset >= 0 && offset + 2 <= view.byteLength
-          ? view.getUint16(offset, little)
-          : null;
-
+        offset >= 0 && offset + 2 <= view.byteLength ? view.getUint16(offset, little) : null;
       const read32 = offset =>
-        offset >= 0 && offset + 4 <= view.byteLength
-          ? view.getUint32(offset, little)
-          : null;
+        offset >= 0 && offset + 4 <= view.byteLength ? view.getUint32(offset, little) : null;
 
       const ifdOffset = read32(tiff + 4);
       if (ifdOffset === null) return null;
@@ -643,50 +562,30 @@ async function readExifDate(file) {
           const q = exifIfd + 2 + j * 12;
           if (q + 12 > view.byteLength) break;
 
-          const tag = read16(q);
-          if (tag !== 0x9003 && tag !== 0x9004) continue;
-
+          if (![0x9003, 0x9004].includes(read16(q))) continue;
           if (read16(q + 2) !== 2) continue;
 
           const size = read32(q + 4);
           const offset = read32(q + 8);
           if (!size || offset === null) continue;
 
-          const stringOffset = tiff + offset;
-          const stringLength = Math.min(size, 32);
-
-          if (
-            stringOffset < 0 ||
-            stringOffset + stringLength > view.byteLength
-          ) continue;
+          const pos = tiff + offset;
+          if (pos < 0 || pos + Math.min(size, 32) > view.byteLength) continue;
 
           let value = "";
-
-          for (let k = 0; k < stringLength; k++) {
-            const char = view.getUint8(stringOffset + k);
+          for (let k = 0; k < Math.min(size, 32); k++) {
+            const char = view.getUint8(pos + k);
             if (!char) break;
             value += String.fromCharCode(char);
           }
 
-          const match = value.match(
-            /^(\d{4}):(\d{2}):(\d{2}) (\d{2}):(\d{2}):(\d{2})$/
-          );
-
+          const match = value.match(/^(\d{4}):(\d{2}):(\d{2}) (\d{2}):(\d{2}):(\d{2})$/);
           if (match) {
-            const [, y, month, day, hour, minute, second] = match;
-
-            return new Date(
-              Number(y),
-              Number(month) - 1,
-              Number(day),
-              Number(hour),
-              Number(minute),
-              Number(second)
-            );
+            const [, y, mo, d, h, mi, s] = match;
+            return new Date(+y, +mo - 1, +d, +h, +mi, +s);
           }
         }
       }
-
       return null;
     }
 
@@ -700,59 +599,49 @@ async function readExifDate(file) {
    EVENTOS Y ARRANQUE
 ======================================== */
 
-// Buscador
-el.search()?.addEventListener("input", event => {
+$("search-input")?.addEventListener("input", event => {
   state.query = event.target.value;
+  if ($("clear-search")) $("clear-search").hidden = !state.query;
   renderTrains();
 });
 
-// Filtros
-el.filters()?.addEventListener("click", event => {
-  const button = event.target.closest(".filter-chip, .chip");
+$("filter-chips")?.addEventListener("click", event => {
+  const button = event.target.closest(".filter-chip");
   if (!button) return;
 
-  state.filter =
-    button.dataset.filter ||
-    button.dataset.operator ||
-    button.textContent.trim();
+  state.filter = button.dataset.filter || "Todos";
 
-  el.filters().querySelectorAll(".filter-chip, .chip").forEach(chip => {
-    chip.classList.toggle("active", chip === button);
+  $("filter-chips").querySelectorAll(".filter-chip").forEach(chip => {
+    const active = chip === button;
+    chip.classList.toggle("active", active);
+    chip.setAttribute("aria-pressed", String(active));
   });
 
   renderTrains();
 });
 
-// Limpiar búsqueda
 $("clear-search")?.addEventListener("click", () => {
-  const search = el.search();
-  if (search) search.value = "";
+  if ($("search-input")) $("search-input").value = "";
   state.query = "";
+  $("clear-search").hidden = true;
   renderTrains();
 });
 
-// Navegación
 $("nav-catalog")?.addEventListener("click", () => showView("catalog-view"));
 $("nav-collection")?.addEventListener("click", () => showView("collection-view"));
 $("back-to-catalog")?.addEventListener("click", () => showView("catalog-view"));
+$("gallery-go-catalog")?.addEventListener("click", () => showView("catalog-view"));
 
-// Tema oscuro: admite varios IDs por compatibilidad.
-const themeButton =
-  $("theme-toggle") ||
-  $("theme-button") ||
-  $("themeButton");
-
-themeButton?.addEventListener("click", () => {
+$("theme-toggle")?.addEventListener("click", () => {
   document.body.classList.toggle("dark");
-  themeButton.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
+  $("theme-toggle").textContent =
+    document.body.classList.contains("dark") ? "☀️" : "🌙";
 });
 
-// Cámara y captura
 $("start-camera")?.addEventListener("click", openCamera);
 $("take-photo")?.addEventListener("click", captureNow);
 
-// Subir una foto existente
-el.photoInput()?.addEventListener("change", async event => {
+$("photo-input")?.addEventListener("change", async event => {
   const file = event.target.files?.[0];
   if (!file) return;
 
@@ -760,17 +649,12 @@ el.photoInput()?.addEventListener("change", async event => {
 
   try {
     const exifDate = await readExifDate(file);
-
     if (!exifDate || Number.isNaN(exifDate.getTime())) {
-      showMessage(
-        "No encontramos una fecha EXIF válida. Prueba con el JPEG original de la cámara.",
-        "error"
-      );
+      showMessage("No encontramos una fecha EXIF válida. Prueba con el JPEG original.", "error");
       return;
     }
 
     const age = Date.now() - exifDate.getTime();
-
     if (age < 0 || age >= 12 * 60 * 60 * 1000) {
       showMessage("La foto debe haberse tomado hace menos de 12 horas.", "error");
       return;
@@ -784,10 +668,9 @@ el.photoInput()?.addEventListener("change", async event => {
   }
 });
 
-// Cerrar diálogo y apagar la cámara
-el.dialog()?.addEventListener("close", stopCamera);
+$("close-capture")?.addEventListener("click", () => $("capture-dialog")?.close());
+$("capture-dialog")?.addEventListener("close", stopCamera);
 
-// Inicio de la aplicación
 updateProgress();
 renderTrains();
 renderGallery();
