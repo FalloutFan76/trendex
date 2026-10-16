@@ -82,7 +82,7 @@ const trains = [
     operator: "Rodalies",
     category: "Cercanías",
     glyph: "🚆",
-    image: "renfe_civia.jpg",
+    image: "renfe_465.jpg",
     color: "#e87827",
     description: "Familia de unidades de cercanías presente en distintas líneas.",
     specific: [
