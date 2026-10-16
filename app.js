@@ -311,6 +311,111 @@ const trains = [
       ["🌁", "En su camino", "Haz la foto desde las vias."]
     ]
   },
+{
+  id: "metro-500",
+  name: "Metro serie 500",
+  series: "Serie 500",
+  operator: "TMB",
+  category: "Metro",
+  glyph: "🚇",
+  image: "metro-500.jpg",
+  color: "#0072bc",
+  description: "Tren de la serie 500 del metro de Barcelona, utilizado en la línea L11.",
+  specific: [
+    ["🚇", "Vista lateral", "Fotografía el tren completo desde una zona pública y segura."],
+    ["🔢", "Identificación", "Captura el número identificativo del tren."]
+  ]
+},
+{
+  id: "metro-2100",
+  name: "Metro serie 2100",
+  series: "Serie 2100",
+  operator: "TMB",
+  category: "Metro",
+  glyph: "🚇",
+  image: "metro-2100.jpg",
+  color: "#0072bc",
+  description: "Tren de la serie 2100, asociado a la línea L4 del metro de Barcelona.",
+  specific: [
+    ["🚇", "Vista lateral", "Fotografía el tren completo desde el andén."],
+    ["🔢", "Identificación", "Captura el número identificativo del tren."]
+  ]
+},
+{
+  id: "metro-5000",
+  name: "Metro serie 5000",
+  series: "Serie 5000",
+  operator: "TMB",
+  category: "Metro",
+  glyph: "🚇",
+  image: "metro-5000.jpg",
+  color: "#0072bc",
+  description: "Tren de la serie 5000 utilizado en el metro de Barcelona.",
+  specific: [
+    ["🚇", "Vista lateral", "Fotografía el tren completo desde un lugar seguro."],
+    ["🚪", "Puertas", "Captura una imagen de las puertas y el exterior del tren."]
+  ]
+},
+{
+  id: "metro-6000",
+  name: "Metro serie 6000",
+  series: "Serie 6000",
+  operator: "TMB",
+  category: "Metro",
+  glyph: "🚇",
+  image: "metro-6000.jpg",
+  color: "#0072bc",
+  description: "Tren de la serie 6000 asociado a la línea L1 del metro de Barcelona.",
+  specific: [
+    ["🚇", "Vista lateral", "Fotografía el tren completo desde el andén."],
+    ["🔢", "Identificación", "Captura el número identificativo del tren."]
+  ]
+},
+{
+  id: "metro-7000",
+  name: "Metro serie 7000",
+  series: "Serie 7000",
+  operator: "TMB",
+  category: "Metro",
+  glyph: "🚇",
+  image: "metro-7000.jpg",
+  color: "#0072bc",
+  description: "Tren moderno de la serie 7000 del metro de Barcelona.",
+  specific: [
+    ["🚇", "Vista frontal", "Fotografía el frontal del tren desde una zona autorizada."],
+    ["🔢", "Identificación", "Captura el número identificativo del tren."]
+  ]
+},
+{
+  id: "metro-8000",
+  name: "Metro serie 8000",
+  series: "Serie 8000",
+  operator: "TMB",
+  category: "Metro",
+  glyph: "🚇",
+  image: "metro-8000.jpg",
+  color: "#0072bc",
+  description: "Tren de la serie 8000 utilizado en la línea L1 del metro de Barcelona.",
+  specific: [
+    ["🚇", "Vista lateral", "Fotografía el tren completo desde el andén."],
+    ["🔢", "Identificación", "Captura el número identificativo del tren."]
+  ]
+},
+{
+  id: "metro-9000",
+  name: "Metro serie 9000",
+  series: "Serie 9000",
+  operator: "TMB",
+  category: "Metro",
+  glyph: "🚇",
+  image: "metro-9000.jpg",
+  color: "#0072bc",
+  description: "Tren de la serie 9000 del metro de Barcelona.",
+  specific: [
+    ["🚇", "Vista frontal", "Fotografía el frontal del tren desde una zona segura."],
+    ["🛤️", "Estación", "Consigue una foto del tren con el nombre de la estación visible."]
+  ]
+},
   {
     id: "tram-302",
     name: "Tram Citadis",
