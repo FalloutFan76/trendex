@@ -478,7 +478,7 @@ function storePhoto(blob, iso, source) {
     }, 900);
   };
 
-  reader.onerror = () => showMessage("No se pudo guardar la imagen.", "error);
+  reader.onerror = () => showMessage("No se pudo guardar la imagen.", "error");
   reader.readAsDataURL(blob);
 }
 
