@@ -281,6 +281,36 @@ const trains = [
       ["🌁", "Sobre puente", "Haz la foto desde un puente."]
     ]
   },
+  {
+   id: "renfe-250",
+   name: "Renfe 250",
+   series: "Serie 250",
+   operator: "Renfe",
+   category: "Locomotora",
+   glyph: "🚆",
+   image: "renfe-250.jpg",
+   color: "#2a9d8f",
+   description: "Locomotora eléctrica de gran potencia construida para trenes pesados de viajeros y mercancías.",
+   specific: [
+     ["🚉", "Vista frontal", "Captura el frontal desde un andén o zona pública segura."],
+     ["🔢", "Identificación", "Fotografía el número de la unidad de forma clara."]
+   ]
+ },
+ {
+   id: "renfe-251",
+   name: "Renfe 251",
+   series: "Serie 251",
+   operator: "Renfe",
+    category: "Locomotora",
+   glyph: "🚆",
+   image: "renfe-251.jpg",
+   color: "#e63946",
+   description: "Mítica locomotora eléctrica de gran potencia de diseño Mitsubishi.",
+   specific: [
+     ["🚉", "Vista frontal", "Captura el frontal desde un andén o mirador seguro."],
+     ["⚙️", "Triple bogie", "Muestra el característico eje central Bo-Bo-Bo en la vista lateral."]
+  ]
+ },
  {
     id: "renfe-252",
     name: "Renfe 252",
@@ -294,6 +324,81 @@ const trains = [
     specific: [
       ["🚉", "Vista frontal", "Fotografía el frontal desde un lugar seguro."],
       ["🌁", "En el andén", "Haz la foto desde el andén."]
+    ]
+  },
+ {
+    id: "renfe-253",
+    name: "Renfe 253",
+    series: "Serie 253",
+    operator: "Renfe",
+    category: "Locomotora",
+    glyph: "🚆",
+    image: "renfe-253.jpg",
+    color: "#2a9d8f",
+    description: "Locomotora de la serie 253 de Renfe, la más común de Cataluña.",
+    specific: [
+      ["🚉", "Vista frontal", "Fotografía el frontal desde un lugar seguro."],
+      ["🌁", "Cereales!", "Capturalo llevando un cerealero."]
+    ]
+  },
+   {
+    id: "renfe-256",
+    name: "Renfe 256",
+    series: "Serie 256",
+    operator: "Renfe",
+    category: "Locomotora",
+    glyph: "🚆",
+    image: "renfe-256.jpg",
+    color: "#2a9d8f",
+    description: "Locomotora eléctrica de seis ejes de alta potencia de la familia EURO6000 de Stadler.",
+    specific: [
+      ["🚉", "Vista frontal", "Captura el diseño del frontal desde un andén o zona pública."],
+      ["⚡", "Seis ejes", "Fotografía el perfil lateral mostrando sus dos bogies de tres ejes."]
+    ]
+  },
+  {
+    id: "renfe-269",
+    name: "Renfe 269",
+    series: "Serie 269",
+    operator: "Renfe",
+    category: "Locomotora",
+    glyph: "🚆",
+    image: "renfe-269.jpg",
+    color: "#f4a261",
+    description: "La auténtica leyenda de las vías españolas. La 'Japonesa' todoterreno que movió al país durante décadas.",
+    specific: [
+      ["🟡", "Edición mítica", "Fotografía una unidad en librea clásica (Milrayas, Estrella o Mazinger)."],
+      ["⚡", "Panto arriba", "Captura la 269 con sus pantógrafos desplegados en plena estación o recinto autorizado."]
+    ]
+  },
+  {
+    id: "renfe-318",
+    name: "Renfe 318",
+    series: "Serie 318",
+    operator: "Renfe",
+    category: "Locomotora",
+    glyph: "🚆",
+    image: "renfe-318.jpg",
+    color: "#2a9d8f",
+    description: "Clásica locomotora diésel-eléctrica de diseño americano ALCO, pionera en la modernización de las líneas no electrificadas.",
+    specific: [
+      ["🚉", "Vista frontal", "Captura el característico testero redondeado desde el andén o una zona autorizada."],
+      ["🔊", "Detalle de cabina", "Fotografía el perfil lateral destacando las ventanas y rejillas de ventilación."]
+    ]
+  },
+  {
+    id: "renfe-319",
+    name: "Renfe 319",
+    series: "Serie 319",
+    operator: "Renfe",
+    category: "Locomotora",
+    glyph: "🚆",
+    image: "renfe-319.jpg",
+    color: "#2a9d8f",
+    description: "Incombustible locomotora diésel de gran potencia, pilar fundamental del tráfico de mercancías y viajeros durante décadas.",
+    specific: [
+      ["🚉", "Vista frontal", "Captura la imponente vista frontal desde un lugar seguro."],
+      ["🎨", "Subserie o librea", "Fotografía los detalles que identifican su subserie (Retales, Grandes Líneas, Mercancías)."]
     ]
   },
   {
