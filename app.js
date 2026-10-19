@@ -416,6 +416,20 @@ const trains = [
       ["🌁", "En tu camino y el suyo", "Haz la foto desde las vias."]
     ]
   },
+  {
+    id: "tram-311",
+    name: "Tram 311",
+    series: "Serie 311",
+    operator: "Tram",
+    category: "Tranvia",
+    glyph: "🚇",
+    image: "tram-311.jpg",
+    color: "#0072bc",
+    description: "El tranvia más nuevo de la flota, con su diseño moderno..",
+    specific: [
+      ["🚇", "Vista frontal", "Fotografía el frontal del tren desde una zona segura."],
+      ["🛤️", "Talleres", "Hazle una foto con los talleres al fondo."]
+  ]
 ];
 
 const $ = id => document.getElementById(id);
