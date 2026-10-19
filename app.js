@@ -350,7 +350,7 @@ const trains = [
   glyph: "🚇",
   image: "metro-5000.jpg",
   color: "#0072bc",
-  description: "Tren de la serie 5000 utilizado en el metro de Barcelona.",
+  description: "Tren de la serie 5000, lo puedes ver en la L5 y a veces en la L3.",
   specific: [
     ["🚇", "Vista lateral", "Fotografía el tren completo desde un lugar seguro."],
     ["🚪", "Puertas", "Captura una imagen de las puertas y el exterior del tren."]
@@ -365,39 +365,24 @@ const trains = [
   glyph: "🚇",
   image: "metro-6000.jpg",
   color: "#0072bc",
-  description: "Tren de la serie 6000 asociado a la línea L1 del metro de Barcelona.",
+  description: "Tren de la serie 6000, el de la línea L1 del metro de Barcelona.",
   specific: [
     ["🚇", "Vista lateral", "Fotografía el tren completo desde el andén."],
     ["🔢", "Identificación", "Captura el número identificativo del tren."]
   ]
 },
 {
-  id: "metro-7000",
-  name: "Metro serie 7000",
-  series: "Serie 7000",
-  operator: "TMB",
-  category: "Metro",
-  glyph: "🚇",
-  image: "metro-7000.jpg",
-  color: "#0072bc",
-  description: "Tren moderno de la serie 7000 del metro de Barcelona.",
-  specific: [
-    ["🚇", "Vista frontal", "Fotografía el frontal del tren desde una zona autorizada."],
-    ["🔢", "Identificación", "Captura el número identificativo del tren."]
-  ]
-},
-{
-  id: "metro-8000",
-  name: "Metro serie 8000",
-  series: "Serie 8000",
+  id: "metro-7000 / 8000",
+  name: "Metro serie 7000 / 8000",
+  series: "Serie 7000 / 8000",
   operator: "TMB",
   category: "Metro",
   glyph: "🚇",
   image: "metro-8000.jpg",
   color: "#0072bc",
-  description: "Tren de la serie 8000 utilizado en la línea L1 del metro de Barcelona.",
+  description: "Las unidades mas modernas del metro de Barcelona.",
   specific: [
-    ["🚇", "Vista lateral", "Fotografía el tren completo desde el andén."],
+    ["🚇", "Vista frontal", "Fotografía el frontal del tren desde una zona autorizada."],
     ["🔢", "Identificación", "Captura el número identificativo del tren."]
   ]
 },
@@ -410,10 +395,10 @@ const trains = [
   glyph: "🚇",
   image: "metro-9000.jpg",
   color: "#0072bc",
-  description: "Tren de la serie 9000 del metro de Barcelona.",
+  description: "El tren automatico del metro de Barcelona.",
   specific: [
     ["🚇", "Vista frontal", "Fotografía el frontal del tren desde una zona segura."],
-    ["🛤️", "Estación", "Consigue una foto del tren con el nombre de la estación visible."]
+    ["🛤️", "Terminal", "Consigue una foto del tren con el nombre de la estación de Can Zam."]
   ]
 },
   {
