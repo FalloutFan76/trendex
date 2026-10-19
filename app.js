@@ -1,6 +1,6 @@
 
 /* ========================================
-   TRENDEX — LÓGICA CORREGIDA
+   TRENDEX
    Compatible con el HTML actual
 ======================================== */
 
