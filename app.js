@@ -487,7 +487,7 @@ const trains = [
   color: "#0072bc",
   description: "Tren de la serie 5000, lo puedes ver en la L5 y a veces en la L3.",
   specific: [
-    ["🚇", "Vista lateral", "Fotografía el tren completo desde un lugar seguro."],
+    ["🚇", "Buscalo", "Fotografía el tren por la L3."],
     ["🚪", "Puertas", "Captura una imagen de las puertas y el exterior del tren."]
   ]
 },
