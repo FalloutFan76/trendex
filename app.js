@@ -87,6 +87,36 @@ const trains = [
     ]
   },
   {
+    id: "fgc-254",
+    name: "FGC 254",
+    series: "Serie 254",
+    operator: "FGC",
+    category: "Locomotora",
+    glyph: "🚆",
+    image: "fgc-254.jpg",
+    color: "#457b9d",
+    description: "La auténtica bestia diésel de vía estrecha. La fuerza bruta que mueve toneladas de potasa y mercancías por el Llobregat.",
+    specific: [
+      ["💨", "Rugido diésel", "Fotografía el frontal de la locomotora encendida desde el andén."],
+      ["📦", "El convoy de la sal", "Captura la 254 arrastrando la interminable composición de vagones de potasa."]
+    ]
+  },
+  {
+    id: "fgc-257",
+    name: "FGC 257",
+    series: "Serie 257",
+    operator: "FGC",
+    category: "Locomotora",
+    glyph: "🚆",
+    image: "fgc-257.jpg",
+    color: "#457b9d",
+    description: "La nueva generación de titanio de FGC. Potencia híbrida de Stadler lista para dominar cualquier tramo del recorrido.",
+    specific: [
+      ["⚡", "Poder dual", "Captura el imponente perfil de la locomotora mostrando su pantógrafo desplegado."],
+      ["🎯", "Vista frontal", "Fotografía el diseño afilado y moderno de la cabina desde un punto seguro."]
+    ]
+  },
+  {
     id: "fgc-ut400",
     name: "FGC UT400",
     series: "Serie 400",
