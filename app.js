@@ -430,6 +430,7 @@ const trains = [
       ["🚇", "Vista frontal", "Fotografía el frontal del tren desde una zona segura."],
       ["🛤️", "Talleres", "Hazle una foto con los talleres al fondo."]
   ]
+  }
 ];
 
 const $ = id => document.getElementById(id);
