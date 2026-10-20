@@ -1190,11 +1190,60 @@ $("nav-collection")?.addEventListener("click", () => showView("collection-view")
 $("back-to-catalog")?.addEventListener("click", () => showView("catalog-view"));
 $("gallery-go-catalog")?.addEventListener("click", () => showView("catalog-view"));
 
-$("theme-toggle")?.addEventListener("click", () => {
-  document.body.classList.toggle("dark");
-  $("theme-toggle").textContent =
-    document.body.classList.contains("dark") ? "☀️" : "🌙";
-});
+/* ========================================
+   TEMA CLARO / OSCURO
+   Guarda y recupera la preferencia
+======================================== */
+
+const THEME_KEY = "trendexTheme";
+
+function applyTheme(theme) {
+  const isDark = theme === "dark";
+
+  document.body.classList.toggle("dark", isDark);
+
+  const button = $("theme-toggle");
+
+  if (button) {
+    button.textContent = isDark ? "☀️" : "🌙";
+    button.setAttribute(
+      "aria-label",
+      isDark ? "Cambiar a tema claro" : "Cambiar a tema oscuro"
+    );
+  }
+}
+
+function loadTheme() {
+  try {
+    const savedTheme = localStorage.getItem(THEME_KEY);
+    applyTheme(savedTheme === "dark" ? "dark" : "light");
+  } catch (error) {
+    applyTheme("light");
+    console.warn("No se pudo recuperar el tema guardado.", error);
+  }
+}
+
+function toggleTheme() {
+  const currentTheme = document.body.classList.contains("dark")
+    ? "dark"
+    : "light";
+
+  const newTheme = currentTheme === "dark" ? "light" : "dark";
+
+  applyTheme(newTheme);
+
+  try {
+    localStorage.setItem(THEME_KEY, newTheme);
+  } catch (error) {
+    console.warn("No se pudo guardar el tema.", error);
+  }
+}
+
+// Recuperar el tema guardado al iniciar la página
+loadTheme();
+
+// Escuchar el botón de cambio de tema
+$("theme-toggle")?.addEventListener("click", toggleTheme);
 
 $("start-camera")?.addEventListener("click", openCamera);
 $("take-photo")?.addEventListener("click", captureNow);
