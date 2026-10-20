@@ -625,6 +625,83 @@ function deletePhoto(missionId) {
   notify("Foto eliminada de tu colección.");
 }
 
+function renderGallery() {
+  const gallery = $("photo-gallery");
+  if (!gallery) return;
+
+  const items = Object.entries(state.photos)
+    .map(([key, photo]) => ({
+      ...photo,
+      missionId: photo.missionId || key
+    }))
+    .sort((a, b) =>
+      new Date(b.capturedAt) - new Date(a.capturedAt)
+    );
+
+  gallery.innerHTML = items.map(item => `
+    <article class="gallery-item">
+      <img
+        src="${item.data}"
+        alt="${item.missionName || "Foto de tren"}"
+        loading="lazy"
+      >
+
+      <div class="gallery-item-info">
+        <strong>${item.missionName || "Misión fotográfica"}</strong>
+
+        <p>
+          ${item.trainName || "Tren"} ·
+          ${item.capturedAt
+            ? new Date(item.capturedAt).toLocaleString("es-ES")
+            : "Fecha desconocida"}
+        </p>
+
+        <button
+          type="button"
+          class="delete-photo-button"
+          data-delete-photo="${item.missionId}"
+          style="
+            display: inline-flex !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            align-items: center;
+            gap: 6px;
+            margin-top: 10px;
+            padding: 9px 12px;
+            border: 1px solid #dc2626;
+            border-radius: 10px;
+            background: #dc2626;
+            color: #fff;
+            font: inherit;
+            cursor: pointer;
+            position: relative;
+            z-index: 2;
+          "
+        >
+          🗑️ Eliminar foto
+        </button>
+      </div>
+    </article>
+  `).join("");
+
+  const empty = $("gallery-empty");
+  if (empty) empty.hidden = items.length > 0;
+
+  const count = $("gallery-count");
+  if (count) {
+    count.textContent = `${items.length} fotos`;
+  }
+
+  gallery.querySelectorAll("[data-delete-photo]").forEach(button => {
+    button.addEventListener("click", event => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      deletePhoto(button.dataset.deletePhoto);
+    });
+  });
+}
+
 function notify(message) {
   const toast = $("toast");
   if (!toast) {
@@ -1080,55 +1157,6 @@ function showExistingPhoto(id) {
   message.appendChild(img);
 
   if (!dialog.open) dialog.showModal();
-}
-
-function renderGallery() {
-  const gallery = $("photo-gallery");
-  if (!gallery) return;
-
-  const items = Object.values(state.photos)
-    .sort((a, b) =>
-      new Date(b.capturedAt) - new Date(a.capturedAt)
-    );
-
-  gallery.innerHTML = items.map(item => `
-    <article class="gallery-item">
-      <img
-        src="${item.data}"
-        alt="${item.missionName}"
-        loading="lazy"
-      >
-
-      <div>
-        <strong>${item.missionName}</strong>
-
-        <p>
-          ${item.trainName} ·
-          ${new Date(item.capturedAt).toLocaleString("es-ES")}
-        </p>
-
-        <button
-          type="button"
-          class="delete-photo-button"
-          data-delete-photo="${item.missionId}"
-        >
-          🗑️ Eliminar foto
-        </button>
-      </div>
-    </article>
-  `).join("");
-
-  const empty = $("gallery-empty");
-  if (empty) empty.hidden = items.length > 0;
-
-  const count = $("gallery-count");
-  if (count) count.textContent = `${items.length} fotos`;
-
-  gallery.querySelectorAll("[data-delete-photo]").forEach(button => {
-    button.addEventListener("click", () => {
-      deletePhoto(button.dataset.deletePhoto);
-    });
-  });
 }
 
 async function readExifDate(file) {
