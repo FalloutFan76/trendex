@@ -879,27 +879,35 @@ function renderMissions() {
 }
 
 function openCapture(missionId) {
-  const dialog = $("capture-dialog");
-  if (!dialog || !state.selected) return;
+  if (!state.selected) return;
 
-  const mission = allMissions(state.selected).find(m => m.id === missionId);
+  const mission = allMissions(state.selected)
+    .find(m => m.id === missionId);
+
   if (!mission) return;
 
   state.mission = missionId;
 
-  const title = dialog.querySelector(".dialog-header h2");
-  const description = dialog.querySelector(".dialog-description");
-  const message = $("capture-message");
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(
+    navigator.userAgent
+  );
 
-  if (title) title.textContent = mission.title;
-  if (description) description.textContent = mission.description;
-  if (message) {
-    message.textContent = "";
-    message.className = "capture-message";
+  const input = $("photo-input");
+  if (!input) {
+    notify("No se encuentra el selector de fotografías.");
+    return;
   }
 
-  $("camera-placeholder")?.classList.remove("hidden");
-  if (!dialog.open) dialog.showModal();
+  input.accept = "image/*";
+
+  if (isMobile) {
+    input.setAttribute("capture", "environment");
+  } else {
+    input.removeAttribute("capture");
+  }
+
+  input.value = "";
+  input.click();
 }
 
 function stopCamera() {
@@ -1249,29 +1257,49 @@ $("start-camera")?.addEventListener("click", openCamera);
 $("take-photo")?.addEventListener("click", captureNow);
 
 $("photo-input")?.addEventListener("change", async event => {
-  const file = event.target.files?.[0];
+  const input = event.target;
+  const file = input.files?.[0];
+
+  // Si el usuario cancela, no hacemos nada.
   if (!file) return;
+
+  if (!file.type.startsWith("image/")) {
+    showMessage("Selecciona un archivo de imagen.", "error");
+    input.value = "";
+    return;
+  }
 
   showMessage("Comprobando la fecha de la fotografía…");
 
   try {
     const exifDate = await readExifDate(file);
+
     if (!exifDate || Number.isNaN(exifDate.getTime())) {
-      showMessage("No encontramos una fecha EXIF válida. Prueba con el JPEG original.", "error");
+      showMessage(
+        "No encontramos una fecha EXIF válida. Prueba con el JPEG original.",
+        "error"
+      );
       return;
     }
 
     const age = Date.now() - exifDate.getTime();
+
     if (age < 0 || age >= 12 * 60 * 60 * 1000) {
-      showMessage("La foto debe haberse tomado hace menos de 12 horas.", "error");
+      showMessage(
+        "La foto debe haberse tomado hace menos de 12 horas.",
+        "error"
+      );
       return;
     }
 
     storePhoto(file, exifDate.toISOString(), "gallery");
-  } catch {
-    showMessage("No se pudo verificar la fecha de la fotografía.", "error");
+  } catch (error) {
+    showMessage(
+      "No se pudo verificar la fecha de la fotografía.",
+      "error"
+    );
   } finally {
-    event.target.value = "";
+    input.value = "";
   }
 });
 
