@@ -595,6 +595,36 @@ function savePhotos() {
   }
 }
 
+function deletePhoto(missionId) {
+  const photo = state.photos[missionId];
+
+  if (!photo) {
+    notify("Esta foto ya no existe en la colección.");
+    return;
+  }
+
+  const confirmed = confirm(
+    `¿Quieres borrar la foto de "${photo.missionName}"?\n\n` +
+    "Esta acción no se puede deshacer."
+  );
+
+  if (!confirmed) return;
+
+  delete state.photos[missionId];
+
+  savePhotos();
+  updateProgress();
+  renderGallery();
+
+  if (state.selected) {
+    renderDetail();
+  }
+
+  renderMissions();
+
+  notify("Foto eliminada de tu colección.");
+}
+
 function notify(message) {
   const toast = $("toast");
   if (!toast) {
@@ -1057,14 +1087,33 @@ function renderGallery() {
   if (!gallery) return;
 
   const items = Object.values(state.photos)
-    .sort((a, b) => new Date(b.capturedAt) - new Date(a.capturedAt));
+    .sort((a, b) =>
+      new Date(b.capturedAt) - new Date(a.capturedAt)
+    );
 
   gallery.innerHTML = items.map(item => `
     <article class="gallery-item">
-      <img src="${item.data}" alt="${item.missionName}" loading="lazy">
+      <img
+        src="${item.data}"
+        alt="${item.missionName}"
+        loading="lazy"
+      >
+
       <div>
         <strong>${item.missionName}</strong>
-        <p>${item.trainName} · ${new Date(item.capturedAt).toLocaleString("es-ES")}</p>
+
+        <p>
+          ${item.trainName} ·
+          ${new Date(item.capturedAt).toLocaleString("es-ES")}
+        </p>
+
+        <button
+          type="button"
+          class="delete-photo-button"
+          data-delete-photo="${item.missionId}"
+        >
+          🗑️ Eliminar foto
+        </button>
       </div>
     </article>
   `).join("");
@@ -1074,6 +1123,12 @@ function renderGallery() {
 
   const count = $("gallery-count");
   if (count) count.textContent = `${items.length} fotos`;
+
+  gallery.querySelectorAll("[data-delete-photo]").forEach(button => {
+    button.addEventListener("click", () => {
+      deletePhoto(button.dataset.deletePhoto);
+    });
+  });
 }
 
 async function readExifDate(file) {
